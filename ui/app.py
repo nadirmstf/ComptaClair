@@ -12,7 +12,7 @@ fenetre.geometry("600x400")
 
 
 # Charger la police Montserrat
-ctypes.windll.gdi32.AddFontResourceW("assets/fonts/Montserrat/Montserrat-Light.ttf")
+ctypes.windll.gdi32.AddFontResourceW("assets/fonts/Montserrat/Montserrat-Bold.ttf")
 
 #Side Bar
 sidebar = ctk.CTkFrame(fenetre, width=200, corner_radius=0, fg_color="#2b2b2b")
@@ -22,21 +22,41 @@ sidebar.pack_propagate(False)
 #Logo
 logo = ctk.CTkImage(Image.open("assets/img/logo.png"), size=(100, 100))
 ctk.CTkLabel(sidebar, image=logo, text="Compta Clair \n Suivi de dépenses", 
-             compound="top", text_color="white").pack(pady='30')  # image en haut, texte en bas
+             compound="top", text_color="white", font=ctk.CTkFont(family="Montserrat Bold", size=10)).pack(pady=30)  # image en haut, texte en bas
 
+def afficher_dashboard() :
+    for w in contenu.winfo_children():  # récupère tous les widgets dans contenu
+        w.destroy()
+    test = ctk.CTkLabel(contenu ,text="TABLEAU DE BORD​", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=35))
+    test.pack()
+
+def afficher_graphiques() :
+    for w in contenu.winfo_children():  # récupère tous les widgets dans contenu
+        w.destroy()
+    test = ctk.CTkLabel(contenu ,text="GRAPHIQUES​", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=35))
+    test.pack()
+
+
+def afficher_depenses() :
+    for w in contenu.winfo_children():  # récupère tous les widgets dans contenu
+        w.destroy()
+    test = ctk.CTkLabel(contenu ,text="DÉPENSES​", text_color="white", font=ctk.CTkFont(family="Montserrat Bold", size=35))
+    test.pack()
 
 
 #Bouttons (ne pas oublier les commandes pour les bouttons)
-btn_dashboard = ctk.CTkButton(sidebar, text="🔰​ Tableau de bord", fg_color="gray30", hover_color="gray")
-btn_dashboard.pack(fill='x', pady=8, padx='15')
 
-btn_dashboard = ctk.CTkButton(sidebar, text="​💲​ Dépenses", fg_color="gray30", hover_color="gray")
-btn_dashboard.pack(fill='x', pady=8, padx='15')
+btn_dashboard = ctk.CTkButton(sidebar, text="🔰​ Tableau de bord", fg_color="gray30", hover_color="gray", command=afficher_dashboard, font=ctk.CTkFont(family="Montserrat Bold", size=12))
+btn_dashboard.pack(fill='x', pady=11, padx=15)
 
-btn_dashboard = ctk.CTkButton(sidebar, text="📊​ Graphiques", fg_color="gray30", hover_color="gray")
-btn_dashboard.pack(fill='x', pady=8,padx='15')
+btn_depenses = ctk.CTkButton(sidebar, text="​💲​ Dépenses", fg_color="gray30", hover_color="gray", command=afficher_depenses, font=ctk.CTkFont(family="Montserrat Bold", size=12))
+btn_depenses.pack(fill='x', pady=11, padx=15)
 
-# JN = ctk.CTkLabel(sidebar ,text="JN Industries \n Tous droits reservés ®️​")
+btn_graphiques = ctk.CTkButton(sidebar, text="📊​ Graphiques", fg_color="gray30", hover_color="gray", command=afficher_graphiques, font=ctk.CTkFont(family="Montserrat Bold", size=12))
+btn_graphiques.pack(fill='x',pady=11, padx=15)
+
+JN = ctk.CTkLabel(sidebar ,text="JN Industries \n Tous droits reservés ®️​", text_color="white")
+JN.pack(side="bottom", pady=10)
 
 
 contenu = ctk.CTkFrame(fenetre, corner_radius=0, fg_color="#1f1f1f")
