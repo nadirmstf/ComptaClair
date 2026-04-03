@@ -29,15 +29,15 @@ def afficher_dashboard() :
         w.destroy()
     titre = ctk.CTkLabel(contenu ,text="TABLEAU DE BORD​", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=35))
     titre.place(x=50, y=40)
-    frame = ctk.CTkFrame(contenu, fg_color="#2b2b2b", height=90,width=250)
-    frame.place(x=50, y=110)
-    frame2 = ctk.CTkFrame(contenu, fg_color="#2b2b2b", height=90,width=250)
+    #Dernière dépense
+    frame1 = ctk.CTkFrame(contenu, fg_color="#2b2b2b", height=120,width=250)
+    frame1.place(x=50, y=110)
+    frame2 = ctk.CTkFrame(contenu, fg_color="#2b2b2b", height=120,width=250)
     frame2.place(x=315, y=110)
-    frame3 = ctk.CTkFrame(contenu, fg_color="#2b2b2b", height=90,width=250)
+    frame3 = ctk.CTkFrame(contenu, fg_color="#2b2b2b", height=120,width=250)
     frame3.place(x=580, y=110)
-    frame4 = ctk.CTkFrame(contenu, fg_color="#2b2b2b", height=90,width=250)
+    frame4 = ctk.CTkFrame(contenu, fg_color="#2b2b2b", height=120,width=250)
     frame4.place(x=845, y=110)
-
 
 
 def afficher_graphiques() :
