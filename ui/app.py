@@ -48,8 +48,18 @@ def derniere_depense():
 def afficher_dashboard() :
     for w in contenu.winfo_children():  # récupère tous les widgets dans contenu
         w.destroy()
-    test = ctk.CTkLabel(contenu ,text="TABLEAU DE BORD​", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=35))
-    test.pack()
+    titre = ctk.CTkLabel(contenu ,text="TABLEAU DE BORD​", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=35))
+    titre.place(x=50, y=40)
+    frame = ctk.CTkFrame(contenu, fg_color="#2b2b2b", height=90,width=250)
+    frame.place(x=50, y=110)
+    frame2 = ctk.CTkFrame(contenu, fg_color="#2b2b2b", height=90,width=250)
+    frame2.place(x=315, y=110)
+    frame3 = ctk.CTkFrame(contenu, fg_color="#2b2b2b", height=90,width=250)
+    frame3.place(x=580, y=110)
+    frame4 = ctk.CTkFrame(contenu, fg_color="#2b2b2b", height=90,width=250)
+    frame4.place(x=845, y=110)
+
+
 
 
 def afficher_graphiques() :
@@ -57,14 +67,22 @@ def afficher_graphiques() :
         w.destroy()
     titre = ctk.CTkLabel(contenu ,text="GRAPHIQUES​", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=35))
     titre.place(x=50, y=40)
+<<<<<<< HEAD
     
+=======
+
+
+>>>>>>> b99ef43e6828e3a6ec4615b91f1833edebabd3fa
 
 def afficher_depenses() :
     for w in contenu.winfo_children():  # récupère tous les widgets dans contenu
         w.destroy()
-    test = ctk.CTkLabel(contenu ,text="DÉPENSES​", text_color="white", font=ctk.CTkFont(family="Montserrat Bold", size=35))
-    test.pack()
+    titre = ctk.CTkLabel(contenu ,text="DÉPENSES​", text_color="white", font=ctk.CTkFont(family="Montserrat Bold", size=35))
+    titre.place(x=50, y=40)
 
+#Page de droite (par opposition au sidebar)
+contenu = ctk.CTkFrame(fenetre, corner_radius=0, fg_color="#1f1f1f")
+contenu.pack(side="right", fill="both", expand=True)
 
 #Bouttons (ne pas oublier les commandes pour les bouttons)
 
@@ -77,10 +95,11 @@ btn_depenses.pack(fill='x', pady=11, padx=15)
 btn_graphiques = ctk.CTkButton(sidebar, text="📊​ Graphiques", fg_color="gray30", hover_color="gray", command=afficher_graphiques, font=ctk.CTkFont(family="Montserrat Bold", size=12))
 btn_graphiques.pack(fill='x',pady=11, padx=15)
 
-JN = ctk.CTkLabel(sidebar ,text="JN Industries \n Tous droits reservés ®️​", text_color="white")
+JN = ctk.CTkLabel(sidebar ,text="JN Industries \n Tous droits reservés ®️​", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=8))
 JN.pack(side="bottom", pady=10)
 
 
+<<<<<<< HEAD
 contenu = ctk.CTkFrame(fenetre, corner_radius=0, fg_color="#1f1f1f")
 contenu.pack(side="right", fill="both", expand=True)
 
@@ -98,5 +117,11 @@ contenu.pack(side="right", fill="both", expand=True)
 
 
 #fenetre.mainloop()
+=======
+btn_dashboard.invoke()
+fenetre.mainloop()
+
+
+>>>>>>> b99ef43e6828e3a6ec4615b91f1833edebabd3fa
 
 fenetre.mainloop()
