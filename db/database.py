@@ -40,6 +40,18 @@ def creer_user(username, password):
     conn.commit()
     print(f"Utilisateur {username} créé avec succès !")
 
+
+def ajout_depense(user_id, montant, categorie, description, date):
+    cursor.execute(
+        """INSERT INTO depenses (montant, categorie, description, date, user_id)
+           VALUES (?, ?, ?, ?, ?)""",
+        (montant, categorie, description, date, user_id)
+    )
+    conn.commit()
+    print(f"Dépense de {montant}€ ajoutée avec succès !")
+
+
 creer_user("noir","manger778")
+
 
 conn.close()
