@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 import customtkinter as ctk
 from PIL import Image
+import sqlite3
 import ctypes
 
 # La fenêtre (taille, icon, titre)
@@ -24,18 +25,39 @@ logo = ctk.CTkImage(Image.open("assets/img/logo.png"), size=(100, 100))
 ctk.CTkLabel(sidebar, image=logo, text="Compta Clair \n Suivi de dépenses", 
              compound="top", text_color="white", font=ctk.CTkFont(family="Montserrat Bold", size=10)).pack(pady=30)  # image en haut, texte en bas
 
+
+#connexion à la DB
+def connexion_db():
+    connexion = sqlite3.connect("tables.db")
+    connexion.row_factory = sqlite3.Row
+    return connexion
+
+def derniere_depense():
+    connexion = connexion_db()
+    cursor = connexion.cursor()
+    cursor.execute("SELECT * FROM depenses ORDER BY id DESC LIMIT 1")
+    colonne = cursor.fetchone()
+    connexion.close()
+    if colonne:
+        return dict(colonne)
+    else:
+        return None
+
+
+
 def afficher_dashboard() :
     for w in contenu.winfo_children():  # récupère tous les widgets dans contenu
         w.destroy()
     test = ctk.CTkLabel(contenu ,text="TABLEAU DE BORD​", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=35))
     test.pack()
 
+
 def afficher_graphiques() :
     for w in contenu.winfo_children():  # récupère tous les widgets dans contenu
         w.destroy()
-    test = ctk.CTkLabel(contenu ,text="GRAPHIQUES​", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=35))
-    test.pack()
-
+    titre = ctk.CTkLabel(contenu ,text="GRAPHIQUES​", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=35))
+    titre.place(x=50, y=40)
+    
 
 def afficher_depenses() :
     for w in contenu.winfo_children():  # récupère tous les widgets dans contenu
@@ -75,7 +97,6 @@ contenu.pack(side="right", fill="both", expand=True)
 
 
 
+#fenetre.mainloop()
+
 fenetre.mainloop()
-
-
-

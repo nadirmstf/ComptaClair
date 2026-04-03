@@ -49,9 +49,11 @@ def ajout_depense(user_id, montant, categorie, description, date):
     )
     conn.commit()
     print(f"Dépense de {montant}€ ajoutée avec succès !")
+    
 
-
-creer_user("noir","manger778")
-
+creer_user("Nadir","Nadir772")
+ajout_depense(1, 65, "categorie", "description", "date")
+ajout_depense(1, 350,"categorie", "description", "date")
+ajout_depense(1, 150,"categorie", "description", "date")
 
 conn.close()
