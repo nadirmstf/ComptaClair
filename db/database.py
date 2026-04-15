@@ -93,7 +93,7 @@ def derniere_depense():
 
 def nombre_transaction():
     if not os.path.exists("tables.db"):
-        print("Base de données vide")
+        # print("Base de données vide")
         return None
 
     cursor.execute(
@@ -103,7 +103,7 @@ def nombre_transaction():
     resultat = cursor.fetchone()
 
     if resultat:
-        print(f"nombre de depense : {resultat[0]}")
+        # print(f"nombre de depense : {resultat[0]}")
         return resultat[0]
     return None
 

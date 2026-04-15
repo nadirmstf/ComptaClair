@@ -32,7 +32,30 @@ sidebar = ctk.CTkFrame(fenetre, width=200, corner_radius=0, fg_color="#2b2b2b")
 sidebar.pack(side="left", fill="y") 
 sidebar.pack_propagate(False)
 
-
+def verifie_derniere_depense() :
+    if derniere_depense() != None:
+        return derniere_depense()
+    if derniere_depense() == None :
+        return 0
+    
+def verifie_depense_mois() :
+    if depense_mois(1) != None:
+        return depense_mois(1)
+    if depense_mois(1) == None :
+        return 0
+    
+def verifie_transaction() :
+    if nombre_transaction() != None:
+        return nombre_transaction()
+    if nombre_transaction() == None :
+        return 0
+    
+def verifie_top_categorie() :
+    if top_categorie(1) != None:
+        return top_categorie(1)
+    if top_categorie(1) == None :
+        return 0
+    
 
 #Logo
 logo = ctk.CTkImage(Image.open("assets/img/logo.png"), size=(100, 100))
@@ -50,47 +73,57 @@ def afficher_dashboard() :
     titre = ctk.CTkLabel(contenu ,text="TABLEAU DE BORD​", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=35))
     titre.grid(row=0, column=0, columnspan=4, pady=(40,5), padx=(20,5), sticky="w")
 
-    # test = ctk.CTkLabel(contenu, text="Bonjour",text_color="white")
-    # test.grid(row=3, column=1)
+    #Frame1
 
 
     frame1 = ctk.CTkFrame(contenu, fg_color="#2b2b2b",height=120,width=250)
     frame1.grid_propagate(False)
     frame1.grid(row=2, column=0, padx=(20,10), pady=10, sticky="nsew")
 
-    frame1_texte = ctk.CTkLabel(frame1, text="Dernière dépense", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=15))
-    frame1_texte.grid(row=0,column=1, pady=10,padx=10)
+    frame1_texte = ctk.CTkLabel(frame1, text="Dernière dépense", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=18))
+    frame1_texte.grid(row=1,column=0, sticky="w",pady=(10,0), padx= 48)
+
+    frame1_texte = ctk.CTkLabel(frame1, text=f"{str(verifie_derniere_depense())} €", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=24))
+    frame1_texte.grid(row=3,column=0,sticky="w",pady=(20,5), padx=95)
+
+    #Frame2
 
     frame2 = ctk.CTkFrame(contenu, fg_color="#2b2b2b",height=120,width=250)
     frame2.grid_propagate(False)
     frame2.grid(row=2, column=1, padx=10, pady=10, sticky="nsew")
 
-    frame2_texte = ctk.CTkLabel(frame2, text="Ce mois-ci", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=15))
-    frame2_texte.grid(row=0,column=1, pady=10,padx=10)
+    frame2_texte = ctk.CTkLabel(frame2, text="Ce mois-ci", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=18))
+    frame2_texte.grid(row=1,column=0, sticky="w",pady=(10,0), padx= 80)
+
+    frame2_texte = ctk.CTkLabel(frame2, text=f"{str(verifie_depense_mois())} €", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=24))
+    frame2_texte.grid(row=3,column=0,sticky="w",pady=(20,5), padx=95)
+
+    #Frame3
 
     frame3 = ctk.CTkFrame(contenu, fg_color="#2b2b2b",height=120,width=250)
     frame3.grid_propagate(False)
     frame3.grid(row=2, column=2, padx=10, pady=10, sticky="nsew")
 
-    frame3_texte = ctk.CTkLabel(frame3, text="Transactions", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=15))
-    frame3_texte.grid(row=0,column=1, pady=10,padx=10)
+    frame3_texte = ctk.CTkLabel(frame3, text="Transactions", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=18))
+    frame3_texte.grid(row=1,column=0, sticky="w",pady=(10,0), padx= 69)
+
+    frame3_texte = ctk.CTkLabel(frame3, text=f"{str(verifie_transaction())}", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=24))
+    frame3_texte.grid(row=3,column=0,sticky="w",pady=(20,5), padx=110)
     
+    #Frame4
+
     frame4 = ctk.CTkFrame(contenu, fg_color="#2b2b2b",height=120,width=250)
     frame4.grid_propagate(False)
     frame4.grid(row=2, column=3, padx=10, pady=10, sticky="nsew")
 
-    frame4_texte = ctk.CTkLabel(frame4, text="Top catégorie", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=15))
-    frame4_texte.grid(row=0,column=1, pady=10,padx=10)
+    frame4_texte = ctk.CTkLabel(frame4, text="Top catégorie", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=18))
+    frame4_texte.grid(row=1,column=0, sticky="w",pady=(10,0), padx= 64)
+
+    frame4_texte = ctk.CTkLabel(frame4, text=f"{str(verifie_derniere_depense())} €", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=24))
+    frame4_texte.grid(row=3,column=0,sticky="w",pady=(20,5), padx=95)
 
     btn_redirect_depense = ctk.CTkButton(contenu, text="➕​​  Ajouter une dépense", width=50,height=40, corner_radius=8,fg_color="#27ae60", hover_color="#1ad668",text_color="white", command=afficher_depenses,font=ctk.CTkFont(family="Montserrat Bold", size=12))
     btn_redirect_depense.grid(row=3, column=0, padx=(20,5), pady=10, sticky="w")
-
-    # if derniere_depense():
-    #     derniere_depense_montant = ctk.CTkLabel(frame1, text=derniere_depense()['montant'], fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=15))
-    #     derniere_depense_montant.place(x=20, y=15)
-    # else :
-    #     derniere_depense_montant = ctk.CTkLabel(frame1, text='0.00$', fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=15))
-    #     derniere_depense_montant.place(x=20, y=15)
 
 
 def afficher_graphiques() :
