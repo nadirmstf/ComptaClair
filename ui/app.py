@@ -4,6 +4,11 @@ import customtkinter as ctk
 from PIL import Image
 import sqlite3
 import ctypes
+import os
+
+
+conn = sqlite3.connect("tables.db")
+cursor = conn.cursor()
 
 # La fenêtre (taille, icon, titre)
 fenetre = ctk.CTk()
@@ -28,20 +33,73 @@ ctk.CTkLabel(sidebar, image=logo, text="Compta Clair \n Suivi de dépenses",
 
 #connexion à la DB
 def connexion_db():
-    connexion = sqlite3.connect("tables.db")
-    connexion.row_factory = sqlite3.Row
-    return connexion
+    return sqlite3.connect("tables.db")
 
 def derniere_depense():
+    if not os.path.exists("tables.db"):
+        print("Base de données vide")
+        return None
+
     connexion = connexion_db()
+    connexion.row_factory = sqlite3.Row
     cursor = connexion.cursor()
+
     cursor.execute("SELECT * FROM depenses ORDER BY id DESC LIMIT 1")
     colonne = cursor.fetchone()
+
     connexion.close()
+
     if colonne:
         return dict(colonne)
-    else:
-        return None
+    return None
+
+def nombre_transaction():
+    cursor.execute(
+        "SELECT COUNT(*) FROM depenses"
+    )
+    
+    resultat = cursor.fetchone()
+
+    if resultat:
+        print(f"nombre de depense : {resultat[0]}")
+        return resultat[0]
+    return None
+
+    
+def top_categorie(user_id):
+    cursor.execute(
+        f"""SELECT categorie, SUM(montant) AS total
+           FROM depenses
+           WHERE user_id = {user_id}
+           GROUP BY categorie
+           ORDER BY total DESC
+           LIMIT 1"""
+    )
+    resultat = cursor.fetchone()
+
+    if resultat:
+        print(f"Catégorie qui a le plus dépenser : {resultat[0]} -> {resultat[1]}€")
+        return resultat[0]
+    return None
+
+from datetime import datetime
+
+def depense_mois(user_id):
+    debut_mois = datetime.now().strftime("%d/%m/%y")
+    
+    cursor.execute(f"""
+        SELECT SUM(montant)
+        FROM depenses
+        WHERE user_id = {user_id}
+        AND date >= {debut_mois}
+    """)
+    
+    resultat = cursor.fetchone()
+    if resultat:
+        total = resultat[0]
+        print(f"Dépenses du mois : {total}€")
+        return total 
+    return None
 
 
 def afficher_dashboard() :
@@ -95,11 +153,13 @@ def afficher_graphiques() :
     titre.place(x=50, y=40)
     
 
+
 def afficher_depenses() :
     for w in contenu.winfo_children():  # récupère tous les widgets dans contenu
         w.destroy()
     titre = ctk.CTkLabel(contenu ,text="DÉPENSES​", text_color="white", font=ctk.CTkFont(family="Montserrat Bold", size=35))
     titre.place(x=50, y=40)
+    
 
 #Page de droite (par opposition au sidebar)
 contenu = ctk.CTkFrame(fenetre, corner_radius=0, fg_color="#1f1f1f")
@@ -121,3 +181,8 @@ JN.pack(side="bottom", pady=10)
  
 btn_dashboard.invoke()
 fenetre.mainloop()
+
+derniere_depense()
+top_categorie(1)
+nombre_transaction()
+depense_mois(1)

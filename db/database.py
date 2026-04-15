@@ -26,7 +26,16 @@ CREATE TABLE IF NOT EXISTS depenses (
 
 conn.commit()
 
-
+categories = [
+    "Alimentation",
+    "Transport",
+    "Logement",
+    "Loisirs",
+    "Santé",
+    "Vêtements",
+    "Éducation",
+    "Autre"
+]
 
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
@@ -42,18 +51,22 @@ def creer_user(username, password):
 
 
 def ajout_depense(user_id, montant, categorie, description, date):
+    if categorie not in categories:
+        print(f"Catégorie invalide. Choisissez parmi : {', '.join(categories)}")
+        return
+
     cursor.execute(
         """INSERT INTO depenses (montant, categorie, description, date, user_id)
            VALUES (?, ?, ?, ?, ?)""",
         (montant, categorie, description, date, user_id)
     )
     conn.commit()
-    print(f"Dépense de {montant}€ ajoutée avec succès !")
+    print(f"Dépense de {montant}€ ajoutée en '{categorie}' !")
     
 
 creer_user("Nadir","Nadir772")
-ajout_depense(1, 65, "categorie", "description", "date")
-ajout_depense(1, 350,"categorie", "description", "date")
-ajout_depense(1, 150,"categorie", "description", "date")
+ajout_depense(1, 65, "Alimentation", "description", "date")
+ajout_depense(1, 350,"Transport", "description", "date")
+ajout_depense(1, 150,"Alimentation", "description", "date")
 
 conn.close()
