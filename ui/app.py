@@ -1,14 +1,21 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+
 from tkinter import *
 from tkinter import ttk
 import customtkinter as ctk
 from PIL import Image
 import sqlite3
 import ctypes
-import os
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from datetime import datetime
+from db.database import selection_date_barres, selection_cat_camembert
+from db.database import depense_mois, top_categorie
+from db.database import nombre_transaction, derniere_depense
+from db.database import ajout_depense, creer_user
 
-
-conn = sqlite3.connect("tables.db")
-cursor = conn.cursor()
 
 # La fenêtre (taille, icon, titre)
 fenetre = ctk.CTk()
@@ -31,78 +38,6 @@ sidebar.pack_propagate(False)
 logo = ctk.CTkImage(Image.open("assets/img/logo.png"), size=(100, 100))
 ctk.CTkLabel(sidebar, image=logo, text="Compta Clair \n Suivi de dépenses", 
              compound="top", text_color="white", font=ctk.CTkFont(family="Montserrat Bold", size=10)).pack(pady=30)  # image en haut, texte en bas
-
-
-#connexion à la DB
-def connexion_db():
-    return sqlite3.connect("tables.db")
-
-def derniere_depense():
-    if not os.path.exists("tables.db"):
-        print("Base de données vide")
-        return None
-
-    connexion = connexion_db()
-    connexion.row_factory = sqlite3.Row
-    cursor = connexion.cursor()
-
-    cursor.execute("SELECT * FROM depenses ORDER BY id DESC LIMIT 1")
-    colonne = cursor.fetchone()
-
-    connexion.close()
-
-    if colonne:
-        return dict(colonne)
-    return None
-
-def nombre_transaction():
-    cursor.execute(
-        "SELECT COUNT(*) FROM depenses"
-    )
-    
-    resultat = cursor.fetchone()
-
-    if resultat:
-        print(f"nombre de depense : {resultat[0]}")
-        return resultat[0]
-    return None
-
-    
-def top_categorie(user_id):
-    cursor.execute(
-        f"""SELECT categorie, SUM(montant) AS total
-           FROM depenses
-           WHERE user_id = {user_id}
-           GROUP BY categorie
-           ORDER BY total DESC
-           LIMIT 1"""
-    )
-    resultat = cursor.fetchone()
-
-    if resultat:
-        print(f"Catégorie qui a le plus dépenser : {resultat[0]} -> {resultat[1]}€")
-        return resultat[0]
-    return None
-
-from datetime import datetime
-
-def depense_mois(user_id):
-    debut_mois = datetime.now().strftime("%d/%m/%y")
-    
-    cursor.execute(f"""
-        SELECT SUM(montant)
-        FROM depenses
-        WHERE user_id = {user_id}
-        AND date >= {debut_mois}
-    """)
-    
-    resultat = cursor.fetchone()
-    if resultat:
-        total = resultat[0]
-        print(f"Dépenses du mois : {total}€")
-        return total 
-    return None
-
 
 def afficher_dashboard() :
     for w in contenu.winfo_children():  # récupère tous les widgets dans contenu
@@ -157,12 +92,63 @@ def afficher_dashboard() :
     #     derniere_depense_montant = ctk.CTkLabel(frame1, text='0.00$', fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=15))
     #     derniere_depense_montant.place(x=20, y=15)
 
+
 def afficher_graphiques() :
     for w in contenu.winfo_children():  # récupère tous les widgets dans contenu
         w.destroy()
-    titre = ctk.CTkLabel(contenu ,text="GRAPHIQUES​", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=35))
+
+    titre = ctk.CTkLabel(contenu, text="GRAPHIQUES​", text_color="white",
+                         font=ctk.CTkFont(family="Montserrat Bold", size=35))
     titre.place(x=50, y=40)
-    
+
+    #Camembert
+    resultats_cat = selection_cat_camembert()
+
+    if resultats_cat:
+        categories = [r[0] for r in resultats_cat]
+        montants_cat = [r[1] for r in resultats_cat]
+
+        fig1, ax1 = plt.subplots(figsize=(4, 3))
+        fig1.patch.set_facecolor("#1f1f1f")
+        ax1.set_facecolor("#1f1f1f")
+        colors = ["#27ae60", "#1E7040", "#00ffcc", "#3498db", "#9b59b6", "#e74c3c", "#f39c12"]
+        ax1.pie(montants_cat, labels=categories, autopct='%1.1f%%',
+                colors=colors[:len(categories)], textprops={'color': 'white', 'fontsize': 8})
+        ax1.set_title("Dépenses par catégorie", color="white", fontsize=12)
+
+        canvas1 = FigureCanvasTkAgg(fig1, master=contenu)
+        canvas1.draw()
+        canvas1.get_tk_widget().place(x=1250, y=160)
+        plt.close(fig1)
+
+    #Barres
+
+    resultats_mois = selection_date_barres()
+
+    if resultats_mois:
+        mois_noms = {
+            "01": "Jan", "02": "Fév", "03": "Mar", "04": "Avr",
+            "05": "Mai", "06": "Juin", "07": "Juil", "08": "Août",
+            "09": "Sep", "10": "Oct", "11": "Nov", "12": "Déc"
+        }
+        mois = [mois_noms.get(r[0], r[0]) for r in resultats_mois]
+        montants_mois = [r[1] for r in resultats_mois]
+
+        fig2, ax2 = plt.subplots(figsize=(12, 8))
+        fig2.patch.set_facecolor("#1f1f1f")
+        ax2.set_facecolor("#2b2b2b")
+        ax2.bar(mois, montants_mois, color="#11b455")
+        ax2.set_title("Dépenses par mois", color="white", fontsize=12)
+        ax2.tick_params(colors="white")
+        ax2.spines['bottom'].set_color('white')
+        ax2.spines['left'].set_color('white')
+        ax2.spines['top'].set_visible(False)
+        ax2.spines['right'].set_visible(False)
+
+        canvas2 = FigureCanvasTkAgg(fig2, master=contenu)
+        canvas2.draw()
+        canvas2.get_tk_widget().place(x=100, y=100)
+        plt.close(fig2)
 
 
 def afficher_depenses() :
@@ -192,8 +178,3 @@ JN.pack(side="bottom", pady=10)
  
 btn_dashboard.invoke()
 fenetre.mainloop()
-
-derniere_depense()
-top_categorie(1)
-nombre_transaction()
-depense_mois(1)
