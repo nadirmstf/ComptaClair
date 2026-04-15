@@ -46,7 +46,7 @@ def derniere_depense():
 
 def afficher_dashboard() :
     for w in contenu.winfo_children():  # récupère tous les widgets dans contenu
-        w.destroy()
+        w.destroy() 
     titre = ctk.CTkLabel(contenu ,text="TABLEAU DE BORD​", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=35))
     titre.place(x=50, y=40)
     #Dernière dépense
@@ -56,8 +56,11 @@ def afficher_dashboard() :
     derniere_depense_texte = ctk.CTkLabel(frame1, text="Dernière dépense", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=15))
     derniere_depense_texte.place(x=20, y=8)
 
-    btn_redirect_depense = ctk.CTkButton(contenu, text="➕​​  Ajouter une dépense", height=40, corner_radius=8,fg_color="gray30", hover_color="gray",text_color="white", command=afficher_depenses,font=ctk.CTkFont(family="Montserrat Bold", size=12))
+    btn_redirect_depense = ctk.CTkButton(contenu, text="➕​​  Ajouter une dépense", height=40, corner_radius=8,fg_color="#27ae60", hover_color="#1ad668",text_color="white", command=afficher_depenses,font=ctk.CTkFont(family="Montserrat Bold", size=12))
     btn_redirect_depense.place(x=50, y=250)
+
+    btn_redirect_graphique = ctk.CTkButton(contenu, text="📊​​​  Voir les graphiques", height=40, corner_radius=8,fg_color="gray30", hover_color="gray",text_color="white", command=afficher_graphiques,font=ctk.CTkFont(family="Montserrat Bold", size=12))
+    btn_redirect_graphique.place(x=235, y=250)
 
     # if derniere_depense():
     #     derniere_depense_montant = ctk.CTkLabel(frame1, text=derniere_depense()['montant'], fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=15))
