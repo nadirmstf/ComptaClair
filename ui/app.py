@@ -132,7 +132,7 @@ def afficher_graphiques() :
 
     titre = ctk.CTkLabel(contenu, text="GRAPHIQUES​", text_color="white",
                          font=ctk.CTkFont(family="Montserrat Bold", size=35))
-    titre.place(x=50, y=40)
+    titre.place(relx=0.05, rely=0.05)
 
     #Camembert
     resultats_cat = selection_cat_camembert()
@@ -151,7 +151,7 @@ def afficher_graphiques() :
 
         canvas1 = FigureCanvasTkAgg(fig1, master=contenu)
         canvas1.draw()
-        canvas1.get_tk_widget().place(x=1250, y=160)
+        canvas1.get_tk_widget().place(relx=0.57, rely=0.15, relwidth=0.40, relheight=0.8)
         plt.close(fig1)
 
     #Barres
@@ -180,7 +180,7 @@ def afficher_graphiques() :
 
         canvas2 = FigureCanvasTkAgg(fig2, master=contenu)
         canvas2.draw()
-        canvas2.get_tk_widget().place(x=100, y=100)
+        canvas2.get_tk_widget().place(relx=0.02, rely=0.15, relwidth=0.55, relheight=0.8)
         plt.close(fig2)
 
 
@@ -202,7 +202,7 @@ btn_dashboard.pack(fill='x', pady=11, padx=15)
 
 btn_depenses = ctk.CTkButton(sidebar, text="​💲​ Dépenses", fg_color="gray30", hover_color="gray", command=afficher_depenses, font=ctk.CTkFont(family="Montserrat Bold", size=12))
 btn_depenses.pack(fill='x', pady=11, padx=15)
-
+    
 btn_graphiques = ctk.CTkButton(sidebar, text="📊​ Graphiques", fg_color="gray30", hover_color="gray", command=afficher_graphiques, font=ctk.CTkFont(family="Montserrat Bold", size=12))
 btn_graphiques.pack(fill='x',pady=11, padx=15)
 
