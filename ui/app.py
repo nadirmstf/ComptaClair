@@ -147,7 +147,7 @@ def afficher_graphiques() :
         colors = ["#27ae60", "#1E7040", "#00ffcc", "#3498db", "#9b59b6", "#e74c3c", "#f39c12"]
         ax1.pie(montants_cat, labels=categories, autopct='%1.1f%%',
                 colors=colors[:len(categories)], textprops={'color': 'white', 'fontsize': 8})
-        ax1.set_title("Dépenses par catégorie", color="white", fontsize=12)
+        ax1.set_title("Dépenses par catégorie (en %)", color="white", fontsize=12)
 
         canvas1 = FigureCanvasTkAgg(fig1, master=contenu)
         canvas1.draw()
@@ -171,7 +171,7 @@ def afficher_graphiques() :
         fig2.patch.set_facecolor("#1f1f1f")
         ax2.set_facecolor("#2b2b2b")
         ax2.bar(mois, montants_mois, color="#11b455")
-        ax2.set_title("Dépenses par mois", color="white", fontsize=12)
+        ax2.set_title("Dépenses par mois (en €)", color="white", fontsize=12)
         ax2.tick_params(colors="white")
         ax2.spines['bottom'].set_color('white')
         ax2.spines['left'].set_color('white')
