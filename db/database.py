@@ -158,7 +158,7 @@ def get_recents() :
     nbr_depenses = cursor.fetchone()[0]
 
     if nbr_depenses > 0 :
-        cursor.execute("SELECT * FROM depenses ORDER BY id DESC LIMIT 5")
+        cursor.execute("SELECT * FROM depenses ORDER BY id DESC LIMIT 10")
         depenses_cinq = cursor.fetchall()
         return depenses_cinq
     else :
@@ -194,5 +194,6 @@ if __name__ == "__main__":
     ajout_depense(1, 65, "Alimentation", "description", "10/01/26")
     ajout_depense(1, 350, "Transport", "description", "10/03/26")
     ajout_depense(1, 150, "Alimentation", "description")
+    ajout_depense(1, 150, "Loisirs", "test")
     # conn.close()
     # os.remove("tables.db") #réinitialise tables.db

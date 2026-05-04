@@ -1,4 +1,3 @@
-#version final
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
@@ -153,19 +152,19 @@ def afficher_dashboard() :
     else :
         label_date = ctk.CTkLabel(frame_centrale, text="Date",
                                   text_color="white", 
-                                  font=ctk.CTkFont(family="Montserrat Light", size=18)
+                                  font=ctk.CTkFont(family="Montserrat Bold", size=18)
                                   )     
         label_cat = ctk.CTkLabel(frame_centrale, text="Catégorie",
                                   text_color="white", 
-                                  font=ctk.CTkFont(family="Montserrat Light", size=18)
+                                  font=ctk.CTkFont(family="Montserrat Bold", size=18)
                                   )
         label_desc = ctk.CTkLabel(frame_centrale, text="Descritption",
                                   text_color="white", 
-                                  font=ctk.CTkFont(family="Montserrat Light", size=18)
+                                  font=ctk.CTkFont(family="Montserrat Bold", size=18)
                                   )      
         label_montant = ctk.CTkLabel(frame_centrale, text="Montant",
                                   text_color="white", 
-                                  font=ctk.CTkFont(family="Montserrat Light", size=18)
+                                  font=ctk.CTkFont(family="Montserrat Bold", size=18)
                                   )    
         
         label_date.grid(row=0, column=0,padx =100)
@@ -174,6 +173,46 @@ def afficher_dashboard() :
         label_montant.grid(row=0, column=3,padx =100)
 
         depenses = get_recents()
+        c = 1
+        for dep in depenses :
+
+            date = dep[4]
+            montant = dep[1]
+            categorie = dep[2]
+            description = dep[3]
+
+            date_label = ctk.CTkLabel(frame_centrale,text=date, 
+                         text_color="white",
+                         font=ctk.CTkFont(family="Montserrat Light", size=18)
+                         )
+            date_label.grid(row=c, column=0)
+
+            cat_label = ctk.CTkLabel(frame_centrale, text=categorie, 
+                         text_color="white",
+                         font=ctk.CTkFont(family="Montserrat Light", size=18)
+                         )
+            cat_label.grid(row=c, column=1)
+
+            desc_label = ctk.CTkLabel(frame_centrale,text=description, 
+                         text_color="white",
+                         font=ctk.CTkFont(family="Montserrat Light", size=18)
+                         )
+            desc_label.grid(row=c, column=2)
+            
+            montant_label = ctk.CTkLabel(frame_centrale,text=montant, 
+                         text_color="white",
+                         font=ctk.CTkFont(family="Montserrat Light", size=18)
+                         )
+            montant_label.grid(row=c, column=3)
+            c += 1
+            
+
+            
+            
+            
+
+
+
         # for i, dep in enumerate(depenses, start=1):
         #     date = dep[4]
         #     montant = dep[1]
