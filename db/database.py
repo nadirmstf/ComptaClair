@@ -1,3 +1,4 @@
+#version final
 import sqlite3
 import hashlib
 from datetime import datetime
@@ -120,7 +121,7 @@ def top_categorie(user_id):
            WHERE user_id = ?
            GROUP BY categorie
            ORDER BY total DESC
-           LIMIT 1""",(user_id)
+           LIMIT 1""",(user_id,)
     )
     resultat = cursor.fetchone()
 
@@ -152,6 +153,17 @@ def depense_mois(user_id):
     return None
 
 
+def get_recents() :
+    cursor.execute("SELECT COUNT(*) FROM depenses")
+    nbr_depenses = cursor.fetchone()[0]
+
+    if nbr_depenses > 0 :
+        cursor.execute("SELECT * FROM depenses ORDER BY id DESC LIMIT 5")
+        depenses_cinq = cursor.fetchall()
+        return depenses_cinq
+    else :
+        return None
+
 def selection_cat_camembert():
     cursor.execute("""
         SELECT categorie, SUM(montant) AS total
@@ -182,4 +194,5 @@ if __name__ == "__main__":
     ajout_depense(1, 65, "Alimentation", "description", "10/01/26")
     ajout_depense(1, 350, "Transport", "description", "10/03/26")
     ajout_depense(1, 150, "Alimentation", "description")
-    conn.close()
+    # conn.close()
+    # os.remove("tables.db") #réinitialise tables.db

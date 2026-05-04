@@ -1,3 +1,4 @@
+#version final
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
@@ -14,18 +15,19 @@ from datetime import datetime
 from db.database import selection_date_barres, selection_cat_camembert
 from db.database import depense_mois, top_categorie
 from db.database import nombre_transaction, derniere_depense
-from db.database import ajout_depense, creer_user
+from db.database import ajout_depense, creer_user, get_recents
 
 
 # La fenêtre (taille, icon, titre)
 fenetre = ctk.CTk()
 fenetre.title("Compta Clair")
 fenetre.iconbitmap("assets\img\icon.ico")
-fenetre.geometry("600x400")
+fenetre.state("zoomed")
 
 
 # Charger la police Montserrat
-ctypes.windll.gdi32.AddFontResourceW("assets/fonts/Montserrat/Montserrat-Bold.ttf")
+ctypes.windll.gdi32.AddFontResourceW("assets/fonts/Montserrat/Montserrat-Bold.ttf") #Montserrat Bold
+ctypes.windll.gdi32.AddFontResourceW("assets/fonts/Montserrat/Montserrat-Light.ttf") #Montserrat Light
 
 #Side Bar
 sidebar = ctk.CTkFrame(fenetre, width=200, corner_radius=0, fg_color="#2b2b2b")
@@ -55,6 +57,10 @@ def verifie_top_categorie() :
         return top_categorie(1)
     if top_categorie(1) == None :
         return 0
+    
+def verifie_recents() :
+    if get_recents() == None :
+        return False
     
 
 #Logo
@@ -126,13 +132,59 @@ def afficher_dashboard() :
     btn_redirect_depense.grid(row=3, column=0, padx=(20,5), pady=10, sticky="w")
 
     #Frame Centrale
-
+        #Titre + Tracé
     frame4_texte = ctk.CTkLabel(contenu, text="Dépenses récentes", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=18))
     frame4_texte.grid(row=4,column=0, sticky="w",pady=(10,0), padx=19)
 
     frame_centrale = ctk.CTkFrame(contenu, fg_color="#2b2b2b")
     contenu.grid_rowconfigure(5, weight=1)
     frame_centrale.grid(row=5, column=0, columnspan=4, padx=(18,12), pady=(10,20),sticky="nsew")
+    
+        #Affichage des 5 dernières dépenses
+
+    if verifie_recents() == False :
+
+        aucune_depense = ctk.CTkLabel(frame_centrale, 
+                                      text="Aucune dépense pour le moment !", 
+                                      fg_color="transparent", 
+                                      text_color="white",
+                                      font=ctk.CTkFont(family="Montserrat Bold", size=25))
+        aucune_depense.place(relx=0.5, rely=0.5, anchor="center")
+    else :
+        label_date = ctk.CTkLabel(frame_centrale, text="Date",
+                                  text_color="white", 
+                                  font=ctk.CTkFont(family="Montserrat Light", size=18)
+                                  )     
+        label_cat = ctk.CTkLabel(frame_centrale, text="Catégorie",
+                                  text_color="white", 
+                                  font=ctk.CTkFont(family="Montserrat Light", size=18)
+                                  )
+        label_desc = ctk.CTkLabel(frame_centrale, text="Descritption",
+                                  text_color="white", 
+                                  font=ctk.CTkFont(family="Montserrat Light", size=18)
+                                  )      
+        label_montant = ctk.CTkLabel(frame_centrale, text="Montant",
+                                  text_color="white", 
+                                  font=ctk.CTkFont(family="Montserrat Light", size=18)
+                                  )    
+        
+        label_date.grid(row=0, column=0,padx =100)
+        label_cat.grid(row=0, column=1,padx =100)
+        label_desc.grid(row=0, column=2,padx =100)
+        label_montant.grid(row=0, column=3,padx =100)
+
+        depenses = get_recents()
+        # for i, dep in enumerate(depenses, start=1):
+        #     date = dep[4]
+        #     montant = dep[1]
+        #     categorie = dep[2]
+        #     description = dep[3]
+
+        #     ctk.CTkLabel(frame_centrale, text=date).grid(row=i, column=0)
+        #     ctk.CTkLabel(frame_centrale, text=f"{montant} €").grid(row=i, column=1)
+        #     ctk.CTkLabel(frame_centrale, text=categorie).grid(row=i, column=2)
+        #     ctk.CTkLabel(frame_centrale, text=description).grid(row=i, column=3)
+
 
 
 
