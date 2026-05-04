@@ -84,7 +84,7 @@ def afficher_dashboard() :
     frame1_texte.grid(row=1,column=0, sticky="w",pady=(10,0), padx= 48)
 
     frame1_texte = ctk.CTkLabel(frame1, text=f"{str(verifie_derniere_depense())} €", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=24))
-    frame1_texte.grid(row=3,column=0,sticky="w",pady=(20,5), padx=95)
+    frame1_texte.grid(row=3,column=0,sticky="ew",pady=(20,5))
 
     #Frame2
 
@@ -96,7 +96,7 @@ def afficher_dashboard() :
     frame2_texte.grid(row=1,column=0, sticky="w",pady=(10,0), padx= 80)
 
     frame2_texte = ctk.CTkLabel(frame2, text=f"{str(verifie_depense_mois())} €", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=24))
-    frame2_texte.grid(row=3,column=0,sticky="w",pady=(20,5), padx=95)
+    frame2_texte.grid(row=3,column=0,sticky="ew",pady=(20,5))
 
     #Frame3
 
@@ -108,7 +108,7 @@ def afficher_dashboard() :
     frame3_texte.grid(row=1,column=0, sticky="w",pady=(10,0), padx= 69)
 
     frame3_texte = ctk.CTkLabel(frame3, text=f"{str(verifie_transaction())}", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=24))
-    frame3_texte.grid(row=3,column=0,sticky="w",pady=(20,5), padx=110)
+    frame3_texte.grid(row=3,column=0,sticky="ew",pady=(20,5))
     
     #Frame4
 
@@ -119,11 +119,21 @@ def afficher_dashboard() :
     frame4_texte = ctk.CTkLabel(frame4, text="Top catégorie", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=18))
     frame4_texte.grid(row=1,column=0, sticky="w",pady=(10,0), padx= 64)
 
-    frame4_texte = ctk.CTkLabel(frame4, text=f"{str(verifie_derniere_depense())} €", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=24))
-    frame4_texte.grid(row=3,column=0,sticky="w",pady=(20,5), padx=95)
+    frame4_texte = ctk.CTkLabel(frame4, text=f"{str(verifie_top_categorie())}", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=24))
+    frame4_texte.grid(row=3,column=0,sticky="ew",pady=(20,5))
 
     btn_redirect_depense = ctk.CTkButton(contenu, text="➕​​  Ajouter une dépense", width=50,height=40, corner_radius=8,fg_color="#27ae60", hover_color="#1ad668",text_color="white", command=afficher_depenses,font=ctk.CTkFont(family="Montserrat Bold", size=12))
     btn_redirect_depense.grid(row=3, column=0, padx=(20,5), pady=10, sticky="w")
+
+    #Frame Centrale
+
+    frame4_texte = ctk.CTkLabel(contenu, text="Dépenses récentes", fg_color="transparent", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=18))
+    frame4_texte.grid(row=4,column=0, sticky="w",pady=(10,0), padx=19)
+
+    frame_centrale = ctk.CTkFrame(contenu, fg_color="#2b2b2b")
+    contenu.grid_rowconfigure(5, weight=1)
+    frame_centrale.grid(row=5, column=0, columnspan=4, padx=(18,12), pady=(10,20),sticky="nsew")
+
 
 
 def afficher_graphiques() :
@@ -188,7 +198,7 @@ def afficher_depenses() :
     for w in contenu.winfo_children():  # récupère tous les widgets dans contenu
         w.destroy()
     titre = ctk.CTkLabel(contenu ,text="DÉPENSES​", text_color="white", font=ctk.CTkFont(family="Montserrat Bold", size=35))
-    titre.place(x=50, y=40)
+    titre.place(relx=0.05, rely=0.05)
     
 
 #Page de droite (par opposition au sidebar)
@@ -197,13 +207,30 @@ contenu.pack(side="right", fill="both", expand=True)
 
 #Bouttons (ne pas oublier les commandes pour les bouttons)
 
-btn_dashboard = ctk.CTkButton(sidebar, text="🔰​ Tableau de bord", fg_color="gray30", hover_color="gray", command=afficher_dashboard,font=ctk.CTkFont(family="Montserrat Bold", size=12))
+btn_dashboard = ctk.CTkButton(sidebar, 
+                              text="🔰​ Tableau de bord", 
+                              fg_color="gray30", 
+                              hover_color="gray", 
+                              command=afficher_dashboard,
+                              font=ctk.CTkFont(family="Montserrat Bold", size=12)
+                              )
+
 btn_dashboard.pack(fill='x', pady=11, padx=15)
 
-btn_depenses = ctk.CTkButton(sidebar, text="​💲​ Dépenses", fg_color="gray30", hover_color="gray", command=afficher_depenses, font=ctk.CTkFont(family="Montserrat Bold", size=12))
+btn_depenses = ctk.CTkButton(sidebar, 
+                             text="​💲​ Dépenses", 
+                             fg_color="gray30", 
+                             hover_color="gray", 
+                             command=afficher_depenses, 
+                             font=ctk.CTkFont(family="Montserrat Bold", size=12))
 btn_depenses.pack(fill='x', pady=11, padx=15)
     
-btn_graphiques = ctk.CTkButton(sidebar, text="📊​ Graphiques", fg_color="gray30", hover_color="gray", command=afficher_graphiques, font=ctk.CTkFont(family="Montserrat Bold", size=12))
+btn_graphiques = ctk.CTkButton(sidebar, 
+                               text="📊​ Graphiques", 
+                               fg_color="gray30", 
+                               hover_color="gray", 
+                               command=afficher_graphiques, 
+                               font=ctk.CTkFont(family="Montserrat Bold", size=12))
 btn_graphiques.pack(fill='x',pady=11, padx=15)
 
 JN = ctk.CTkLabel(sidebar ,text="JN Industries \n Tous droits reservés ®️​", text_color="white",font=ctk.CTkFont(family="Montserrat Bold", size=13))
